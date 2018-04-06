@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>semantic</name>
+  <version>0.0.0</version>
+  <description>The semantic package</description>
+
+  <!-- One maintainer tag required, multiple allowed, one person per tag -->
+  <!-- Example:  -->
+  <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
+  <maintainer email="yuki0w0@todo.todo">yuki0w0</maintainer>
+
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>boost</depend>
+
+  <depend>roscpp</depend>
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>image_transport</depend>
+  <depend>cv_bridge</depend>
+  <depend>sensor_msgs</depend>
+  <depend>message_generation</depend>
+  <depend>message_filters</depend>
+  <depend>darknet_ros_msgs</depend>
+  <depend>orb_slam2</depend>
+
+  <!-- Test dependencies -->
+  <test_depend>rostest</test_depend>
+
+</package>

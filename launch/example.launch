@@ -1,0 +1,24 @@
+<launch>
+  <include file = "$(find usb_cam)/launch/usb_cam.launch">
+    <arg name = "video" value = "/dev/video0"/>
+  </include>
+  <include file = "$(find darknet_ros)/launch/darknet_ros.launch" />
+  <!-- Console launch prefix -->
+  <arg name="launch_prefix" default="xterm -e"/>
+
+  <node name="mono" pkg="orb_slam2" type="mono" output="screen" >
+    <remap from="/camera/image_raw" to="/usb_cam/image_raw" />
+    <param name="voc_path" value="/home/yuki0w0/ORB_SLAM2/Vocabulary/ORBvoc.txt" />
+    <param name="cal_path" value="/home/yuki0w0/ORB_SLAM2/Examples/ROS/orb_slam2/Asus.yaml" />
+  </node>
+
+  <!-- Start semantic -->
+  <node pkg="semantic" type="semantic" name="semantic" output="screen" launch-prefix="$(arg launch_prefix)">
+    
+    <remap from="Box" to="/darknet_ros/bounding_boxes" />
+    <!--<remap from="boundingboxes" to="/darknet_ros/bounding_boxes" />-->
+    <remap from="MapKeyPoints" to="mono/MapKeyPoints" />
+  </node>
+
+ <!--<node name="republish" type="republish" pkg="image_transport" output="screen" 	args="compressed in:=/front_camera/image_raw raw out:=/camera/image_raw" /> -->
+</launch>

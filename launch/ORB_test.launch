@@ -1,0 +1,18 @@
+<launch>
+  <include file = "$(find usb_cam)/launch/usb_cam.launch" />
+  
+  <!-- Console launch prefix -->
+  <arg name="launch_prefix" default="xterm -e"/>
+
+  <!-- Start ORB-SLAM2 -->
+  <node name="mono" pkg="orb_slam2" type="mono" output="screen" >
+    <remap from="/camera/image_raw" to="/usb_cam/image_raw" />
+    <param name="voc_path" value="/home/yuki0w0/ORB_SLAM2/Vocabulary/ORBvoc.txt" />
+    <param name="cal_path" value="/home/yuki0w0/ORB_SLAM2/Examples/ROS/orb_slam2/Asus.yaml" />
+  </node>
+
+  <!-- Start semantic -->
+  <!--<node pkg="semantic" type="semantic" name="semantic" output="screen" launch-prefix="$(arg launch_prefix)">
+    <remap from="KeyPoints" to="/Mono/MapPoints" />
+  </node>-->
+</launch>

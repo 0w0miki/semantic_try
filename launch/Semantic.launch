@@ -1,0 +1,18 @@
+<launch>
+  <!-- Console launch prefix -->
+  <arg name="launch_prefix" default=""/>
+
+  <!-- Load Parameters -->
+  <rosparam command="load" ns="darknet_ros" file="$(find darknet_ros)/config/yolo_voc.yaml"/>
+  
+  <!-- Start semantic -->
+  <node pkg="semantic" type="semantic" name="semantic" output="screen" launch-prefix="$(arg launch_prefix)">
+    
+    <remap from="Box" to="/darknet_ros/bounding_boxes" />
+    <!--<remap from="boundingboxes" to="/darknet_ros/bounding_boxes" />-->
+    <remap from="MapKeyPoints" to="mono/MapKeyPoints" />
+  </node>
+
+  <!--<node pkg="rosbag" type="play" name="bag_play" args="/home/yuki0w0/ros_workspaces/YOLO_ws/ORByolo2018-03-19-05-50-26.bag -s 20"/>-->
+ <!--<node name="republish" type="republish" pkg="image_transport" output="screen" 	args="compressed in:=/front_camera/image_raw raw out:=/camera/image_raw" /> -->
+</launch>

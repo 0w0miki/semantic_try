@@ -169,8 +169,8 @@ void drawSemanticMap(){
     DisplayRegistedPoints.points.push_back(p);
     ++registedPt_iter;
   }
-  Map_pub.publish(CubeArray);
-  RegistedPoints_pub.publish(DisplayRegistedPoints);
+  // Map_pub.publish(CubeArray);
+  // RegistedPoints_pub.publish(DisplayRegistedPoints);
 }
 
 void BBoxCallback(const darknet_ros_msgs::BoundingBoxes& inputBoxes){
@@ -384,7 +384,7 @@ void pointsCallback(const orb_slam2::MapKeyPoints& inputPoints){
     MPstack.push_back(inputPoints.mappoints);
   }
 }
-/* 
+
 void callback(const sensor_msgs::ImageConstPtr& img, const darknet_ros_msgs::BoundingBoxesConstPtr& inputBoxes){
   ROS_INFO_STREAM_ONCE("WTF");
   if(init_status){
@@ -421,7 +421,7 @@ void callback(const sensor_msgs::ImageConstPtr& img, const darknet_ros_msgs::Bou
       ++map_it;
     }
   }
-} */
+}
 
 int main (int argc, char** argv)
 {
@@ -445,20 +445,20 @@ int main (int argc, char** argv)
   }
   /******************** Subscriber topic ********************/
   ros::Subscriber KP_sub = nh.subscribe ("MapKeyPoints", 10, pointsCallback);
-  ros::Subscriber BBox_sub = nh.subscribe ("Box", 10, BBoxCallback);
+  // ros::Subscriber BBox_sub = nh.subscribe ("Box", 10, BBoxCallback);
   
   /******************** Publish topic ********************/
-  // image_pub = nh.advertise<sensor_msgs::Image>("KBoxImage",1,true);
+  image_pub = nh.advertise<sensor_msgs::Image>("KBoxImage",1,true);
   Map_pub = nh.advertise<visualization_msgs::MarkerArray>("SemanticMap",1,true);
   RegistedPoints_pub = nh.advertise<visualization_msgs::Marker>("RegistedPoints",1,true);
   ORBMapPoints_pub = nh.advertise<visualization_msgs::Marker>("ORBMapPoints",1,true);
   /******************** message_filters ********************/
-  // message_filters::Subscriber<sensor_msgs::Image> image_sub(nh,"/darknet_ros/detection_image",10);
-  // message_filters::Subscriber<darknet_ros_msgs::BoundingBoxes> BBox_sub(nh,"boundingboxes",10);
-  // typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, 
-  //                                                       darknet_ros_msgs::BoundingBoxes> MySyncPolicy;
-  // Synchronizer<MySyncPolicy> sync(MySyncPolicy(10), image_sub, BBox_sub);
-  // sync.registerCallback(boost::bind(&callback, _1, _2));
+  message_filters::Subscriber<sensor_msgs::Image> image_sub(nh,"/darknet_ros/detection_image",10);
+  message_filters::Subscriber<darknet_ros_msgs::BoundingBoxes> Box_sub(nh,"boundingboxes",10);
+  typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, 
+                                                        darknet_ros_msgs::BoundingBoxes> MySyncPolicy;
+  Synchronizer<MySyncPolicy> sync(MySyncPolicy(10), image_sub, Box_sub);
+  sync.registerCallback(boost::bind(&callback, _1, _2));
   /****************** message_filters end ******************/
   // Create a ROS publisher
   
